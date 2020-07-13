@@ -116,38 +116,28 @@ def update_databases(databases: {str: mara_db.dbs.DB}):
         cursor.execute('SELECT id, name FROM metabase_database')
         existing_database_ids = {name: id for id, name in cursor.fetchall()}
 
-        for name, db in databases.items():
-            if name in existing_database_ids:
-                cursor.execute(f"""
-UPDATE metabase_database 
-SET details = {'%s'}, engine = {'%s'} 
-WHERE id = {'%s'};                 
-""",
-                               (json.dumps(db_details(db)), db_engine(db), existing_database_ids[name]))
-                print(cursor.query.decode('utf-8'))
-            else:
+        if len(existing_database_ids) != len(databases):
+            cursor.execute(f"TRUNCATE metabase_database CASCADE;")
+            print(cursor.query.decode('utf-8'))
+
+            for name, db in databases.items():
                 cursor.execute(f"""
 INSERT INTO metabase_database (created_at, updated_at, name, details, engine) 
-VALUES (current_timestamp, current_timestamp, {'%s'}, {'%s'}, {'%s'})
+VALUES (current_timestamp, current_timestamp, {'%s'}, {'%s'}, {'%s'});
 """,
                                (name, json.dumps(db_details(db)), db_engine(db)))
                 print(cursor.query.decode('utf-8'))
 
-        for name, id in existing_database_ids.items():
-            if name not in databases:
-                # try to delete database (useful for getting rid of the example data set.
-                # might not work, e.g. when dashboards that reference the db exist.
-                try:
-                    cursor.execute(f"""
-TRUNCATE metabase_fieldvalues;
-DELETE FROM metabase_field WHERE table_id in (SELECT id FROM metabase_table WHERE db_id = {'%s'});
-DELETE FROM metabase_table WHERE db_id = {'%s'};
-DELETE FROM metabase_database WHERE id = {'%s'};
-        """, (id, id, id))
-                    print(cursor.query.decode('utf-8'))
-                except Exception as e:
-                    print(cursor.query.decode('utf-8'))
-                    print(e)
+        else:
+            for name, id in zip(databases.keys(), existing_database_ids.values()):
+                db = databases[name]
+                cursor.execute(f"""
+UPDATE metabase_database
+SET details = {'%s'}, engine = {'%s'}, name={'%s'}
+WHERE id = {'%s'};
+""",
+                               (json.dumps(db_details(db)), db_engine(db), name, id))
+                print(cursor.query.decode('utf-8'))
 
 
 def update_settings(settings: [(str, str)]):
