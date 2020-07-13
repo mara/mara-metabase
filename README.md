@@ -12,7 +12,7 @@ Automating the setup and configuration of Metabase instances. Comes with
 
 - Syncing of field descriptions and metrics defined with [Mara Schema](https://github.com/mara/mara-schema) to Metabase
 
-- syncing of users and permissions to Metabase
+- Syncing of users and permissions to Metabase
 
 - A Makefile for running Metabase locally
 
@@ -42,7 +42,7 @@ For an example of an integration into a flask application, have a look at the [m
 
 From within a project, include [https://github.com/mara/mara-metabase/tree/master/.scripts/metabase.mk] in your project Makefile (as for example in [https://github.com/mara/mara-example-project-1/blob/master/Makefile](https://github.com/mara/mara-example-project-1/blob/master/Makefile)).
 
-Running `make setup-metabase` will download a Metabase jar file, run database migrations, add an admin user & create a database connection to the data warehouse. Then running `make run-metabase` will start Metabase on port 3000: 
+Running `make setup-metabase` will download a Metabase jar file, run database migrations, add an admin user & create a database connection to the data warehouse. Then, running `make run-metabase` will start Metabase on port 3000: 
 
 ![Saiku](docs/metabase.png)
 
@@ -74,14 +74,14 @@ This function assumes that all reporting tables were created using the sql-gener
 
 The schema sync can be triggered manually with `flask mara_metabase.update-metadata`.
 
-Have a look at [https://github.com/mara/mara-example-project-1/blob/master/app/pipelines/update_frontends/__init__.py](https://github.com/mara/mara-example-project-1/blob/master/app/pipelines/update_frontends/__init__.py) for how to integrate schema sync into a data pipeline.
+Have a look at [https://github.com/mara/mara-example-project-1/blob/master/app/pipelines/update_frontends/\_\_init\_\_.py](https://github.com/mara/mara-example-project-1/blob/master/app/pipelines/update_frontends/__init__.py) for how to integrate schema sync into a data pipeline.
 
 &nbsp;
 
 
 ## Syncing of users, groups & permissions from [Mara ACL](https://github.com/mara/mara-acl)
 
-Once you add the Saiku ACL resource in [mara_metabase/views.py](https://github.com/mara/mara-metabase/tree/master/mara_metabase/views.py) to your project, you can control easily control which users can query which data sets:
+Once you add the Metabase ACL resource in [mara_metabase/views.py](https://github.com/mara/mara-metabase/tree/master/mara_metabase/views.py) to your project, you can easily control which users can query which data sets:
 
 ![Metabase ACL](docs/mara-acl.png)
 
