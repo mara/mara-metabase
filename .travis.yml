@@ -2,19 +2,19 @@ language: python
 dist: xenial
 matrix:
   include:
-    - python: '3.6'
-    - python: '3.7'
-      env: UPLOAD=True
-    - python: '3.8'
+  - python: '3.6'
+  - python: '3.7'
+    env: UPLOAD=True
+  - python: '3.8'
 install:
-  - pip install .[test]
+- pip install .[test]
 script: echo hello world
 deploy:
   provider: pypi
   distributions: sdist
   user: mara-pypi-upload-account
   password:
-    secure: 0TQCqyHghdxbOQgpBRlJJzReA/Ksys/YB01T8B7Kxn8rNHwxjcY/PBv1/IrlfSz7Qn2QVrQwloYWQfiGlG7vzyPn7GdMElNEDQDWN4TvtjT93hpsWM5kn7MPI1eZTo2Ua0u+FDoMcMkTPB/qYJWttCQGm+Cd3SwQFJUW4lgXRw1k5GPujDZjxgHrNg5tshV1Ss7hB52wxfaSeqJU4Xu/9AuKfC4xITuXn15w0EOV/hvrXFuYNl03LhOTPAfiyAL+QqlBOEZq9DOAYd5bYSFkjhfwyM14Kp7AUvq1ZOwLWe8o/6sG0F8SUIEte7CncsAXC3WV64nTrIDUvg82YaRu5cx9mtRtiKFGHQJQpVaTQD87EBZ+hgZG7j2vlgI74jRyG9V7gbxj3JBgDzsET4eiIPGX/RQM7THvUdCB2nSPGGAvkcf+DwLtm/n0JDBJhUEtDq5pCcP/IcM3ij/q3qSzO9CgbE/uoLVfh1DQwQKT944Ls0ArCgpUw9Pc3iidlx1/3xOy6N7MONwSXBSX6SilV098QfTkQ0AHRCxg86YUZ8ijnJnF+UguDM7C1NMRXA/ir+FFZUU7rSuQppHDZK8eBNL1a5G4t8W2PftL0tAonEJESB8SW6rLnLHRqY2UWw7PelwZ3kQvUJAg0V1mow3nsekloZWmpaGo5PJFzUXjSD4=
+    secure: SUVFbewb46XqA13VtySXgj6KlPjyBRcIyGmEno1rvs8wC0ZjPcRVkwtN3MpA9G8aSSl+6oLca5OsmRpnLODjHy4irea7M5B12Zq93/nsPl/yumrJ9L3TgbX3aI5qMu8yG2YPhxJChrxrquw7B6fhw0oOPbSkgdam0DkbplFxclsNZXSV2TWm5tLGt2DGS0M0KeOuApy1nu6m/uW5pqVyhLknmcbzw7EpCp7Pe6YK48eX2+P+ikoE6HOE6ENUjrZvD4F8zR27Rk/boCPXFoA/9vG6IzIDMFXVYXPRnv5Y9scz0wtbs+uHblWPQ0a8g38LHVsEp2cwpC2o7kX73JdO0GZiz0CFlyND42v7goR2ZbebXEsfJv+jG9HR1JmTx+gDdBz9bxCBYC+0ao3ELeog9wtl977T9HJg2gUfqYTetG0NkF/+jNvVJuELuRlySmlHMg1dQjBm94aG3ESQiBdy/OQD7q/jJy0Hg8Y6FWKMGBkUB6IYt0YnbOJIMfi4y99bm1v7ROeXfqHxGPn51JL8qBG4Tnh/bl9jvGmCaMPN153uyRLrbMaJt+Ikr73vdcbXv3PHtPYLhKkhvHo0SfSTlppTz1dgfbODrUVlZ02jQ25wbUwCIdCOOnlJBzuhw2IZz/Z1r8CM812I4DGj6AvP2e88LsyFzF2VM0cNQduWTBw=
   on:
     tags: true
     branch: master
