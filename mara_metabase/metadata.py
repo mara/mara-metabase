@@ -27,7 +27,7 @@ def update_metadata() -> bool:
     print(f'.. Waiting {seconds} seconds')
     time.sleep(seconds)
 
-    metadata = client.get(f'/api/database/{dwh_db_id}/metadata')
+    metadata = client.get(f'/api/database/{dwh_db_id}/metadata?include_hidden=true')
     data_sets = {data_set.name: data_set for data_set in mara_schema.config.data_sets()}
 
     for table in metadata['tables']:
