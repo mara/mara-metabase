@@ -7,7 +7,7 @@ def get_long_description():
 
 setup(
     name='mara-metabase',
-    version='1.0.1',
+    version='1.1.0',
 
     description='Configuring Metabase from Python',
 
