@@ -17,7 +17,7 @@ setup(
     url = 'https://github.com/mara/mara-metabase',
 
     install_requires=[
-        'mara-db>=4.5.0',
+        'mara-db>=4.7.1',
         'mara-page',
         'sympy',
         'bcrypt',

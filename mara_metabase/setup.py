@@ -112,7 +112,7 @@ def __(_):
 def __(db: mara_db.dbs.SQLServerDB):
     # NOTE: The SQL server port is fix here because mara_db.dbs.SQLServerDB does not have the port
     # NOTE: We use here the SQL Server default instance 'MSSQLSERVER'. Named instances are not supported via mara_db.dbs.SQLServerDB yet
-    return {"host": db.host, "instance": "MSSQLSERVER", "port": 1433, "db": db.database, "user": db.user, "ssl": False,
+    return {"host": db.host, "instance": "MSSQLSERVER", "port": db.port, "db": db.database, "user": db.user, "ssl": False,
             "password": db.password, "additional-options": "encrypt=true", "tunnel-endabled": False}
 
 def update_databases(databases: {str: mara_db.dbs.DB}):
