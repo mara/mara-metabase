@@ -19,5 +19,3 @@ def MARA_NAVIGATION_ENTRIES():
     from . import views
     return {'Metabase': views.navigation_entry()}
 
-from . import acl
-acl.patch_acl_methods()
