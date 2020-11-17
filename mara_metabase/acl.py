@@ -94,7 +94,7 @@ def sync():
     print(client.put('/api/permissions/graph', new_graph))
 
 
-def patch_acl_methods():
+def enable_automatic_sync_of_users_and_permissions_to_metabase():
     import mara_acl.permissions
     import mara_acl.users
     from mara_app.monkey_patch import wrap
