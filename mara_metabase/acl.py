@@ -13,7 +13,9 @@ def sync():
     client = MetabaseClient()
 
     metabase_groups = {group['name']: group['id'] for group in client.get('/api/permissions/group')}
-    metabase_users = {user['email']: user['id'] for user in client.get('/api/user')}
+    metabase_users = {user['email']: user['id'] for user in client.get('/api/user?include_deactivated=true')}
+    deactivated_metabase_users = {user['email']: user['id'] for user
+                                  in client.get('/api/user?include_deactivated=true') if not user['is_active']}
     mara_roles = set()
     mara_users = set()
 
@@ -38,6 +40,8 @@ def sync():
                     if email not in metabase_users:
                         print(client.post('/api/user', metabase_user))
                     else:
+                        if email in deactivated_metabase_users:
+                            print(client.put(f'/api/user/{metabase_users[email]}/reactivate', metabase_user))
                         print(client.put(f'/api/user/{metabase_users[email]}', metabase_user))
 
     # delete groups that don't exist as roles in Mara
