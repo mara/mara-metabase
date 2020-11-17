@@ -44,7 +44,7 @@ From within a project, include [https://github.com/mara/mara-metabase/tree/maste
 
 Running `make setup-metabase` will download a Metabase jar file, run database migrations, add an admin user & create a database connection to the data warehouse. Then, running `make run-metabase` will start Metabase on port 3000:
 
-![Saiku](docs/metabase.png)
+![Metabase](docs/metabase.png)
 
 You can log in with the default username `admin@my-company.com` and the password `123abc` (configurable via [mara_metabase/config.py](https://github.com/mara/mara-metabase/tree/master/mara_metabase/config.py), please change in production).
 
@@ -58,9 +58,9 @@ For running Metabase in production, please have a look at [https://www.metabase.
 
 The file [mara_metabase/setup.py](https://github.com/mara/mara-metabase/tree/master/mara_metabase/setup.py) contains functions for configuring a Metabase instance by directly writing to its metadata database (rather than manually configuring an instance through the UI). These functions are particularly useful when multiple Metabase instances are maintained (e.g. one for each testing / staging environment).
 
-There is a a flask cli command for running the `setup` function: `flask mara_metabase.setup`.
+There is a flask cli command for running the `setup` function: `flask mara_metabase.setup`.
 
-**Be aware that this command will remove any other configured data base connection from metabase!**
+**Danger: this will remove any other configured database connections from metabase!**
 
 &nbsp;
 
@@ -87,15 +87,16 @@ Once you add the Metabase ACL resource in [mara_metabase/views.py](https://githu
 
 ![Metabase ACL](docs/mara-acl.png)
 
-The sync must be explicitly enabled in your setup code to not interfere with a metabase instance which has its own user management.
-
-**Be aware, that the groups of metabase users are set to the groups of the mara permission UI. Metabase Groups not available in the mara permission UI will be removed, potentially removing access to data for these users.**
+The sync must be explicitly enabled in your setup code to not interfere with a metabase instance which has its own user management:
 
 ```python
-# e.g. in app/__init__.py or app/local_setup.py
+# e.g. in app/ui/__init__.py 
 import mara_metabase.acl
-mara_metabase.acl.enable_automatic_user_group_sync_to_metabase_on_save()
+mara_metabase.acl.enable_automatic_sync_of_users_and_permissions_to_metabase()
 ```
+
+**Danger: Enabling this feature will overwrite any existing users, groups & permissions in Metabase**
+
 
 After enabling, all users in Mara ACL will be synced to Metabase together with their respective groups on "Save" of the permissions. Permissions in Metabase can be given for all or for individual data sets.
 

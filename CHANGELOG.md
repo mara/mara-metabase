@@ -11,9 +11,10 @@
 If you want users synced to metabase, you now need to enable that in your code:
 
 ```python
-# e.g. in app/__init__.py or app/local_setup.py
+# e.g. in app/ui/__init__.py 
 import mara_metabase.acl
-mara_metabase.acl.enable_automatic_user_group_sync_to_metabase_on_save()
+
+mara_metabase.acl.enable_automatic_sync_of_users_and_permissions_to_metabase()
 ```
 
 ## 1.1.0 (2020-10-26)
