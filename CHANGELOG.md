@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 (2021-01)
+
+- Don't define database connection as sample (#11)
+- Enable patching of how a metric is displayed in metabase (#9)
+- Bump default Metabase version to `v0.37.7`
+
 ## 2.0.0 (2020-11-17)
 
 - Disable implicit automatic user sync: it needs now to be explicitly enabled to prevent
