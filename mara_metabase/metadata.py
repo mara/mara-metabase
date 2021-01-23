@@ -1,8 +1,10 @@
 import sys
 import time
+import typing as t
 
 import mara_schema.config
 from mara_schema.metric import Metric, SimpleMetric, ComposedMetric, Aggregation
+from mara_schema.attribute import Attribute
 
 from . import config
 from .client import MetabaseClient
@@ -34,7 +36,7 @@ def update_metadata() -> bool:
         data_set = data_sets.get(table['name'])
         if data_set:
             client.put(f'/api/table/{table["id"]}',
-                       {'description': data_set.entity.description,
+                       {'description': metabase_description(data_set.entity),
                         'show_in_getting_started': True,
                         'field_order': 'database'})
 
@@ -48,7 +50,7 @@ def update_metadata() -> bool:
                 if attribute:
                     # https://github.com/metabase/metabase/blob/master/frontend/src/metabase/meta/types/Field.js
                     client.put(f'/api/field/{field["id"]}',
-                               {'description': attribute.description or 'tbd',
+                               {'description': metabase_description(attribute) or 'tbd',
                                 'visibility_type': 'normal',
                                 })
                 else:
@@ -58,16 +60,11 @@ def update_metadata() -> bool:
 
             for name, _metric in data_set.metrics.items():
                 metric = {'name': name,
-                          'description': _metric.description,
+                          'description': metabase_description(_metric),
                           'table_id': table['id'],
                           'definition': {'source-table': table['id'],
                                          'aggregation': [
-                                             metric_definition(_metric, table)
-                                             if isinstance(_metric, SimpleMetric)
-                                             else ['aggregation-options',
-                                                   metric_definition(_metric, table),
-                                                   {'display-name': _metric.display_formula()}
-                                                   ]
+                                             metabase_aggregation_definition(_metric, table)
                                          ]},
                           'show_in_getting_started': False,
                           'how_is_this_calculated': _metric.display_formula(),
@@ -97,7 +94,25 @@ def update_metadata() -> bool:
     return True
 
 
-def metric_definition(metric: Metric, table) -> []:
+# These are functions to be patchable
+
+def metabase_description(item: t.Union[SimpleMetric, ComposedMetric, Attribute]) -> str:
+    """Return the description of this item"""
+    return item.description
+
+
+def metabase_aggregation_definition(_metric: t.Union[SimpleMetric, ComposedMetric], table: dict) -> t.List:
+    """Return the aggregation definition suitable to be send as part of the payload to the metabase /api/metric endpoint"""
+    if isinstance(_metric, SimpleMetric):
+        return metric_definition(_metric, table)
+    else:
+        return ['aggregation-options',
+                metric_definition(_metric, table),
+                {'display-name': _metric.display_formula()}
+                ]
+
+
+def metric_definition(metric: Metric, table: dict) -> []:
     """Turn a Mara Schema metric into a a formula that Metabase understands"""
 
     from sympy.parsing import sympy_parser
