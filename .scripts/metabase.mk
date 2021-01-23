@@ -2,7 +2,7 @@
 
 # set variables unless already set earlier
 metabase-directory ?= .metabase
-metabase-version ?= v0.37.2
+metabase-version ?= v0.37.7
 metabase-metadata-db ?= metabase_metadata
 metabase-metadata-db-connection-uri ?= postgres://127.0.0.1:5432/$(metabase-metadata-db)?user=root
 
