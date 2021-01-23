@@ -132,8 +132,8 @@ def update_databases(databases: {str: mara_db.dbs.DB}):
 
             for name, db in databases.items():
                 cursor.execute(f"""
-INSERT INTO metabase_database (created_at, updated_at, name, details, engine) 
-VALUES (current_timestamp, current_timestamp, {'%s'}, {'%s'}, {'%s'});
+INSERT INTO metabase_database (created_at, updated_at, name, details, engine, is_sample) 
+VALUES (current_timestamp, current_timestamp, {'%s'}, {'%s'}, {'%s'}, false);
 """,
                                (name, json.dumps(db_details(db)), db_engine(db)))
                 print(cursor.query.decode('utf-8'))
@@ -143,7 +143,7 @@ VALUES (current_timestamp, current_timestamp, {'%s'}, {'%s'}, {'%s'});
                 db = databases[name]
                 cursor.execute(f"""
 UPDATE metabase_database
-SET details = {'%s'}, engine = {'%s'}, name={'%s'}
+SET details = {'%s'}, engine = {'%s'}, name={'%s'}, is_sample=false
 WHERE id = {'%s'};
 """,
                                (json.dumps(db_details(db)), db_engine(db), name, id))
