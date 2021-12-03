@@ -13,10 +13,15 @@ from .client import MetabaseClient
 def update_metadata() -> bool:
     """Updates descriptions of tables & fields in Metabase, creates metrics and flushes field caches"""
     client = MetabaseClient()
+    all_dbs = client.get('/api/database/')
 
-    dwh_db_id = next(filter(lambda db: db['name'] == config.metabase_data_db_name(),
-                            client.get('/api/database/')),
-                     {}).get('id')
+    # metabase changed the API response sometimes between 38 and 41...
+    if isinstance(all_dbs, dict):
+        all_dbs = all_dbs["data"]
+    dwh_db_id = None
+    for db in all_dbs:
+        if db['name'] == config.metabase_data_db_name():
+            dwh_db_id = db['id']
 
     if not dwh_db_id:
         print(f'Database {config.metabase_data_db_name()} not found in Metabase', file=sys.stderr)
