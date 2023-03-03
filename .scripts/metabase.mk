@@ -38,4 +38,3 @@ setup-metabase: migrate-metabase-db .copy-mara-metabase-scripts
 
 .cleanup-metabase:
 	rm -rf $(metabase-directory)
-

@@ -20,7 +20,7 @@
 If you want users synced to metabase, you now need to enable that in your code:
 
 ```python
-# e.g. in app/ui/__init__.py 
+# e.g. in app/ui/__init__.py
 import mara_metabase.acl
 
 mara_metabase.acl.enable_automatic_sync_of_users_and_permissions_to_metabase()

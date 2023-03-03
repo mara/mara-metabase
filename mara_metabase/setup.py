@@ -56,12 +56,12 @@ def add_user(first_name: str, last_name: str, email: str, password: str,
 
     with mara_db.postgresql.postgres_cursor_context(config.metabase_metadata_db_alias()) as cursor:
         cursor.execute(f"""
-INSERT INTO core_user (email, first_name, last_name, password, password_salt, 
+INSERT INTO core_user (email, first_name, last_name, password, password_salt,
                        date_joined, is_superuser, is_active)
-VALUES ({'%s'}, {'%s'}, {'%s'}, 
-        {'%s'}, {'%s'}, 
+VALUES ({'%s'}, {'%s'}, {'%s'},
+        {'%s'}, {'%s'},
         current_timestamp, {'%s'}, TRUE)
-ON CONFLICT (email) DO UPDATE 
+ON CONFLICT (email) DO UPDATE
    SET first_name=EXCLUDED.first_name,
        last_name=EXCLUDED.last_name,
        password=EXCLUDED.password,
@@ -132,7 +132,7 @@ def update_databases(databases: {str: mara_db.dbs.DB}):
 
             for name, db in databases.items():
                 cursor.execute(f"""
-INSERT INTO metabase_database (created_at, updated_at, name, details, engine, is_sample) 
+INSERT INTO metabase_database (created_at, updated_at, name, details, engine, is_sample)
 VALUES (current_timestamp, current_timestamp, {'%s'}, {'%s'}, {'%s'}, false);
 """,
                                (name, json.dumps(db_details(db)), db_engine(db)))

@@ -90,7 +90,7 @@ Once you add the Metabase ACL resource in [mara_metabase/views.py](https://githu
 The sync must be explicitly enabled in your setup code to not interfere with a metabase instance which has its own user management:
 
 ```python
-# e.g. in app/ui/__init__.py 
+# e.g. in app/ui/__init__.py
 import mara_metabase.acl
 mara_metabase.acl.enable_automatic_sync_of_users_and_permissions_to_metabase()
 ```
