@@ -22,6 +22,7 @@ def update_metadata() -> bool:
     for db in all_dbs:
         if db['name'] == config.metabase_data_db_name():
             dwh_db_id = db['id']
+            break
 
     if not dwh_db_id:
         print(f'Database {config.metabase_data_db_name()} not found in Metabase', file=sys.stderr)
